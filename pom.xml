@@ -13,7 +13,33 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
-
+  <build>
+  <plugins>
+  <plugin>
+    <artifactId>maven-assembly-plugin</artifactId>
+    <version>2.2</version>
+    <configuration>
+      <archive>
+        <manifest>
+        	<mainClass>Count.Test_Sift.SimpleApp</mainClass>
+        </manifest>
+      </archive>
+      <descriptorRefs>
+      	<descriptorRef>jar-with-dependencies</descriptorRef>
+      </descriptorRefs>
+    </configuration>
+    <executions>
+      <execution>
+      	<id>make-assembly</id>
+      	<phase>package</phase>
+      	<goals>
+      		<goal>single</goal>
+      	</goals>
+      </execution>
+    </executions>
+  </plugin>
+  </plugins>
+  </build>
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
@@ -25,6 +51,16 @@
       <groupId>org.apache.spark</groupId>
       <artifactId>spark-core_2.10</artifactId>
       <version>1.6.0</version>
+    </dependency>
+    <dependency>
+      <groupId>jai_codec</groupId>
+      <artifactId>jai_codec</artifactId>
+      <version>1.0.0</version>
+    </dependency>
+    <dependency>
+      <groupId>jai_core</groupId>
+      <artifactId>jai_core</artifactId>
+      <version>1.0.0</version>
     </dependency>
   </dependencies>
 </project>
