@@ -2,10 +2,10 @@ package Count.Test_Sift;
 
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
 import java.awt.image.ImageProducer;
 import java.awt.image.RenderedImage;
+import java.awt.image.WritableRenderedImage;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -16,13 +16,17 @@ import javax.media.jai.remote.SerializableRenderedImage;
 public class SeriImage extends Image implements Serializable{
 	protected transient RenderedImage image;
 	
-	public SeriImage(RenderedImage image){
+	public SeriImage(WritableRenderedImage image){
 		this.image=image;
+	}
+	
+	public RenderedImage getRenderedImage(){
+		return image;
 	}
 	
 	private void writeObject(ObjectOutputStream out) throws IOException{
 		out.defaultWriteObject();
-		out.writeObject(new SerializableRenderedImage(image,true));
+		out.writeObject(new SerializableRenderedImage(image));
 	}
 	
 	private void readObject(ObjectInputStream in) throws ClassNotFoundException, IOException{
@@ -33,13 +37,13 @@ public class SeriImage extends Image implements Serializable{
 	@Override
 	public int getWidth(ImageObserver observer) {
 		// TODO Auto-generated method stub
-		return image.getWidth();
+		return 0;
 	}
 
 	@Override
 	public int getHeight(ImageObserver observer) {
 		// TODO Auto-generated method stub
-		return image.getHeight();
+		return 0;
 	}
 
 	@Override
@@ -59,5 +63,4 @@ public class SeriImage extends Image implements Serializable{
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
 }
