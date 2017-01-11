@@ -26,7 +26,7 @@ public class SeriImage extends Image implements Serializable{
 	
 	private void writeObject(ObjectOutputStream out) throws IOException{
 		out.defaultWriteObject();
-		out.writeObject(new SerializableRenderedImage(image));
+		out.writeObject(new SerializableRenderedImage(image,true));
 	}
 	
 	private void readObject(ObjectInputStream in) throws ClassNotFoundException, IOException{
