@@ -6,18 +6,23 @@ import java.awt.image.ImageObserver;
 import java.awt.image.ImageProducer;
 import java.awt.image.RenderedImage;
 import java.awt.image.WritableRenderedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
+import javax.imageio.ImageIO;
 import javax.media.jai.remote.SerializableRenderedImage;
 
 public class SeriImage extends Image implements Serializable{
 	protected transient RenderedImage image;
+	private int size;
 	
-	public SeriImage(WritableRenderedImage image){
+	public SeriImage(RenderedImage image,long size){
 		this.image=image;
+		this.size=(int)size;
 	}
 	
 	public RenderedImage getRenderedImage(){
@@ -26,12 +31,26 @@ public class SeriImage extends Image implements Serializable{
 	
 	private void writeObject(ObjectOutputStream out) throws IOException{
 		out.defaultWriteObject();
-		out.writeObject(new SerializableRenderedImage(image,true));
+		ByteArrayOutputStream buff = new ByteArrayOutputStream();
+		ImageIO.write(image, "JPG", buff);
+		byte[] images=buff.toByteArray();
+		out.writeInt(size);
+		out.write(images);
+		//out.writeObject(new SerializableRenderedImage(image,true));
 	}
 	
 	private void readObject(ObjectInputStream in) throws ClassNotFoundException, IOException{
 		in.defaultReadObject();
-		image=(RenderedImage)in.readObject();
+		int imageLen=in.readInt();
+		ByteArrayOutputStream buff=new ByteArrayOutputStream();
+		int readLen=0;
+		byte[] readBuff=new byte[1024];
+		while((readLen=in.read(readBuff))!=-1){
+			buff.write(readBuff,0,readLen);
+		}
+		ByteArrayInputStream imageReadBuff=new ByteArrayInputStream(buff.toByteArray());
+		image=ImageIO.read(imageReadBuff);
+		//image=(RenderedImage)in.readObject();
 	}
 
 	@Override

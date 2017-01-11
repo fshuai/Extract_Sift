@@ -99,7 +99,7 @@ public class SimpleApp implements Serializable{
 		List<SeriImage> imageList=new ArrayList<SeriImage>();
 		for(int i=0;i<tempList.length;i++){
 			if(tempList[i].getName().endsWith(".jpg") || tempList[i].getName().endsWith(".png")){
-				SeriImage tmp=new SeriImage(ImageIO.read(tempList[i]));
+				SeriImage tmp=new SeriImage(ImageIO.read(tempList[i]),tempList[i].length());
 				imageList.add(tmp);
 			}
 		}
@@ -166,7 +166,8 @@ public class SimpleApp implements Serializable{
 			public List<ImageFeature> call(SeriImage arg0) throws Exception {
 				// TODO Auto-generated method stub
 				List<ImageFeature> list=null;
-				list=getFeatures1((RenderedImage)arg0.getRenderedImage());
+				RenderedImage tmp=arg0.getRenderedImage();
+				list=getFeatures((Image)tmp);
 				return list;
 			}
 
